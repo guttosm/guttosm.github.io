@@ -1,0 +1,31 @@
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.tag-filled {
+  background: var(--chip);
+  color: var(--cyan);
+}
+
+.tag-outline {
+  border: 1px solid var(--line);
+  color: var(--muted);
+  padding: 3px 9px;
+}
+
+.tag-chip {
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  background: var(--chip);
+}

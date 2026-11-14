@@ -1,0 +1,16 @@
+/* --section-bg lets content that must match its section's background (like timeline dots) follow it */
+.section {
+  --section-bg: var(--bg);
+  padding-block: clamp(64px, 9vw, 96px);
+}
+
+.band {
+  --section-bg: var(--bg-band);
+  background: var(--section-bg);
+  border-block: 1px solid var(--line);
+}
+
+/* The footer draws the line under the last section */
+main > .band:last-child {
+  border-bottom: 0;
+}

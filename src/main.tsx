@@ -1,7 +1,9 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+// Global styles first, so component styles imported by App can build on them
+import './styles/tokens.css';
+import './styles/base.css';
 import App from './App';
-import './styles.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

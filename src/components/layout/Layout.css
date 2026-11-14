@@ -1,0 +1,9 @@
+/* Keeps the footer at the bottom on short pages */
+.site-main {
+  min-height: 70vh;
+}
+
+/* Focus moves here on page changes; the outline would frame the whole page */
+.site-main:focus {
+  outline: none;
+}

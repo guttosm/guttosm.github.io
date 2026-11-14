@@ -1,0 +1,31 @@
+.not-found {
+  padding-block: clamp(64px, 9vw, 96px);
+}
+
+.not-found-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.not-found h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(30px, 4vw, 44px);
+  line-height: 1.15;
+}
+
+.not-found-text {
+  color: var(--muted);
+  max-width: 40em;
+}
+
+.not-found-home {
+  margin-top: 8px;
+}
+
+/* The arrow points back home */
+.not-found-home svg {
+  transform: scaleX(-1);
+}

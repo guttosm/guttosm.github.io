@@ -1,0 +1,63 @@
+.about {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px;
+}
+
+.about-copy {
+  flex: 1 1 420px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.about-copy p {
+  max-width: 36em;
+}
+
+.about-lead {
+  font-size: 17px;
+}
+
+.focus-list {
+  flex: 1 1 380px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.focus-card {
+  padding: 22px;
+  display: flex;
+  gap: 16px;
+  border-radius: 14px;
+}
+
+.focus-card > div {
+  min-width: 0;
+}
+
+.focus-icon {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--chip);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.focus-card h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.focus-card p {
+  margin-top: 4px;
+  font-size: 15px;
+}

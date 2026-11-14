@@ -1,41 +1,35 @@
-import { About } from './components/About';
-import ClickSpark from './components/ClickSpark';
-import { Contact } from './components/Contact';
-import { Experience } from './components/Experience';
-import { Footer } from './components/Footer';
-import { Hero } from './components/Hero';
-import { Nav } from './components/Nav';
-import { Skills } from './components/Skills';
-import { Work } from './components/Work';
-import { useTheme } from './hooks/useTheme';
+import { BrowserRouter, Route, Routes } from 'react-router';
+import { Layout } from './components/layout/Layout';
+import { SECTION_IDS } from './data/sections';
+import { I18nProvider } from './i18n/I18nProvider';
+import type { Locale } from './i18n/locales';
+import { HomePage } from './pages/HomePage';
+import { NotFoundPage } from './pages/NotFoundPage';
+import { SectionPage } from './pages/SectionPage';
 
-export default function App() {
-  const { theme, toggleTheme } = useTheme();
+// The router wants the site's base path without the trailing slash: "/portfolio", or "/" at the domain root
+const BASENAME = import.meta.env.BASE_URL.replace(/\/$/, '') || '/';
 
+interface AppProps {
+  /** Skips language detection, e.g. in tests. */
+  initialLocale?: Locale;
+}
+
+/** Composition root: wires the providers and the pages. */
+export default function App({ initialLocale }: AppProps) {
   return (
-    <ClickSpark
-      selector="button, .button"
-      sparkColor={['#8b5cf6', '#06b6d4', '#ec4899']}
-      sparkSize={12}
-      sparkRadius={28}
-      sparkCount={10}
-      duration={450}
-      zIndex={50}
-      style={{ height: 'auto' }}
-    >
-      <a href="#main" className="skip-link">
-        Skip to content
-      </a>
-      <Nav theme={theme} onToggleTheme={toggleTheme} />
-      <main id="main">
-        <Hero />
-        <Work />
-        <About />
-        <Experience />
-        <Skills />
-        <Contact />
-      </main>
-      <Footer />
-    </ClickSpark>
+    <I18nProvider initialLocale={initialLocale}>
+      <BrowserRouter basename={BASENAME}>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route index element={<HomePage />} />
+            {SECTION_IDS.map((id) => (
+              <Route key={id} path={id} element={<SectionPage id={id} />} />
+            ))}
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </I18nProvider>
   );
 }

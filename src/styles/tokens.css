@@ -1,0 +1,36 @@
+/* GM Signature theme. Dark is the default; light overrides the same tokens. */
+:root {
+  --bg: #0a0f24;
+  --bg-band: #0d1330;
+  --fg: #eef1ff;
+  --muted: #949dc2;
+  --line: #222b4d;
+  --card: #111833;
+  --chip: #18214a;
+  --purple: #a78bfa;
+  --cyan: #22d3ee;
+  --magenta: #f472b6;
+  --button: #7c3aed;
+  --button-hover: #6d28d9;
+
+  --font-display: 'Sora', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Manrope', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
+
+  --gutter: clamp(20px, 5vw, 48px);
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  --bg: #f6f7fd;
+  --bg-band: #eceffa;
+  --fg: #0b1020;
+  --muted: #545d80;
+  --line: #d9ddef;
+  --card: #ffffff;
+  --chip: #eef0fb;
+  --purple: #6d28d9;
+  --cyan: #0e7490;
+  --magenta: #be185d;
+  color-scheme: light;
+}

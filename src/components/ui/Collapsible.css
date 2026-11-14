@@ -1,0 +1,53 @@
+.collapsible-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+/* Four lines at the body line height */
+.collapsible-content.is-clamped {
+  max-height: 6.4em;
+  overflow: hidden;
+}
+
+.collapsible-content.is-faded {
+  -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent);
+  mask-image: linear-gradient(to bottom, #000 45%, transparent);
+}
+
+.collapsible-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  color: var(--purple);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.collapsible-toggle:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.collapsible-chevron {
+  display: inline-flex;
+  transition: transform 0.2s ease;
+}
+
+.collapsible-chevron.is-open {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collapsible-chevron {
+    transition: none;
+  }
+}

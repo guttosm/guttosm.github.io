@@ -1,0 +1,39 @@
+.icon-button {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line);
+  color: var(--fg);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.icon-button:hover {
+  border-color: var(--purple);
+}
+
+.icon-button-md {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+}
+
+.icon-button-sm {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+}
+
+.icon-button-solid {
+  background: var(--card);
+}
+
+.icon-button-ghost {
+  background: transparent;
+  color: var(--muted);
+}
+
+.icon-button-ghost:hover {
+  color: var(--fg);
+}

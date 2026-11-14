@@ -1,0 +1,18 @@
+.section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.section-header h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(30px, 4vw, 44px);
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+.section-header .lead {
+  color: var(--muted);
+  max-width: 40em;
+}
