@@ -2,17 +2,26 @@ import type { AnchorHTMLAttributes, ReactNode } from 'react';
 import { Link, type To } from 'react-router';
 import { cx } from '../../utils/cx';
 import { Icon, type IconName } from './Icon';
+import { StarBorder, type StarBorderProps } from './StarBorder';
 import './ButtonLink.css';
 
 interface ButtonStyleProps {
   variant?: 'primary' | 'secondary';
   iconStart?: IconName;
   iconEnd?: IconName;
+  /** Runs a star of light around the button's border. `true` uses the defaults. */
+  starBorder?: boolean | StarBorderProps;
 }
 
-function ButtonContent({ iconStart, iconEnd, children }: Omit<ButtonStyleProps, 'variant'> & { children: ReactNode }) {
+function ButtonContent({
+  iconStart,
+  iconEnd,
+  starBorder,
+  children,
+}: Omit<ButtonStyleProps, 'variant'> & { children: ReactNode }) {
   return (
     <>
+      {starBorder && <StarBorder {...(starBorder === true ? {} : starBorder)} />}
       {iconStart && <Icon name={iconStart} size={16} />}
       {children}
       {iconEnd && <Icon name={iconEnd} size={16} />}
@@ -31,6 +40,7 @@ export function ButtonLink({
   variant = 'primary',
   iconStart,
   iconEnd,
+  starBorder,
   external = false,
   className,
   children,
@@ -38,8 +48,12 @@ export function ButtonLink({
 }: ButtonLinkProps) {
   const externalProps = external ? { target: '_blank', rel: 'noreferrer' } : {};
   return (
-    <a className={cx('button', `button-${variant}`, className)} {...externalProps} {...rest}>
-      <ButtonContent iconStart={iconStart} iconEnd={iconEnd}>
+    <a
+      className={cx('button', `button-${variant}`, starBorder && 'star-border', className)}
+      {...externalProps}
+      {...rest}
+    >
+      <ButtonContent iconStart={iconStart} iconEnd={iconEnd} starBorder={starBorder}>
         {children}
       </ButtonContent>
     </a>
@@ -56,13 +70,14 @@ export function ButtonRouterLink({
   variant = 'primary',
   iconStart,
   iconEnd,
+  starBorder,
   className,
   children,
   ...rest
 }: ButtonRouterLinkProps) {
   return (
-    <Link to={to} className={cx('button', `button-${variant}`, className)} {...rest}>
-      <ButtonContent iconStart={iconStart} iconEnd={iconEnd}>
+    <Link to={to} className={cx('button', `button-${variant}`, starBorder && 'star-border', className)} {...rest}>
+      <ButtonContent iconStart={iconStart} iconEnd={iconEnd} starBorder={starBorder}>
         {children}
       </ButtonContent>
     </Link>

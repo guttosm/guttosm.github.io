@@ -7,12 +7,16 @@ export const profile = {
   firstName: 'Gustavo Simões',
   lastName: 'de Moraes',
   shortName: 'Gustavo Moraes',
-  initials: 'GM',
+  initials: 'GSM',
   email: 'gsimoes.shark@gmail.com',
   phone: '+55 (11) 99554-9317',
   linkedin: {
     url: 'https://www.linkedin.com/in/guttosm/',
     label: '/in/guttosm',
+  },
+  github: {
+    url: 'https://github.com/guttosm',
+    label: '/guttosm',
   },
   cvUrl: `${import.meta.env.BASE_URL}Gustavo-Simoes-de-Moraes-CV.pdf`,
 } as const;

@@ -21,6 +21,7 @@ export const pt: Messages = {
     skills: 'Habilidades',
     contact: 'Contato',
   },
+  intro: { skip: 'Pular intro' },
   hero: {
     eyebrow: 'Engenheiro de Software · Backend, Cloud e Identidade',
     intro:
@@ -28,10 +29,13 @@ export const pt: Messages = {
     viewExperience: 'Ver experiência',
     downloadCv: 'Baixar CV',
     location: 'São Caetano do Sul, SP, Brasil · Português e inglês (C1)',
+    stackChart: {
+      label: 'Tecnologias no meu stack, ano a ano',
+      count: (count) => `${count} tecnologias`,
+    },
   },
   stats: [
     { value: '11+ anos', label: 'construindo sistemas backend desde 2015' },
-    { value: '11 empresas', label: 'fintech, varejo e consultoria' },
     { value: 'Java · Go', label: 'microsserviços orientados a eventos' },
     { value: 'AWS · GCP', label: 'Kubernetes, Terraform, IAM' },
   ],
@@ -134,6 +138,7 @@ export const pt: Messages = {
   },
   skills: {
     title: 'Tecnologias',
+    clusterLoad: 'carga do cluster · 7 dias',
     groups: {
       languages: 'Linguagens e frameworks',
       identity: 'Identidade e segurança',
@@ -161,7 +166,8 @@ export const pt: Messages = {
     lead: 'Contratando para backend, cloud ou identidade? Me mande uma mensagem e eu retorno.',
     emailMe: 'Enviar e-mail',
     linkedIn: 'Conectar no LinkedIn',
-    fields: { email: 'E-mail', phone: 'Telefone', linkedin: 'LinkedIn', location: 'Moro em' },
+    gitHub: 'Ver no GitHub',
+    fields: { email: 'E-mail', phone: 'Telefone', linkedin: 'LinkedIn', github: 'GitHub', location: 'Moro em' },
     location: 'São Caetano do Sul, Brasil',
     copyField: (field) => `Copiar ${field.toLowerCase()}`,
     copied: 'Copiado para a área de transferência',

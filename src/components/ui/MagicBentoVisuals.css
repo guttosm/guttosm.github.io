@@ -1,0 +1,696 @@
+/* Visuals from React Bits' Magic Bento (graph, integration hub, security toggles, pipeline), on the site's tokens.
+   --mb-accent-rgb and --mb-accent-ink come from the bento's glow colour, set in MagicBento.tsx. */
+
+.magic-bento {
+  --mb-ink: var(--fg);
+  --mb-muted: var(--muted);
+  --mb-faint: color-mix(in srgb, var(--muted) 60%, transparent);
+  --mb-line: var(--line);
+  --mb-ring: var(--card);
+  --mb-inner-radius: 10px;
+  --mb-tile: var(--chip);
+  --mb-tile-edge: var(--line);
+  --mb-tile-highlight: rgba(255, 255, 255, 0.06);
+  --mb-tile-shadow: 0 4px 10px -4px rgba(0, 0, 0, 0.55);
+  --mb-well: color-mix(in srgb, var(--fg) 3%, transparent);
+  --mb-well-edge: var(--line);
+}
+
+:root[data-theme='light'] .magic-bento {
+  --mb-tile-highlight: rgba(255, 255, 255, 1);
+  --mb-tile-shadow: 0 4px 10px -5px rgba(11, 16, 32, 0.18);
+}
+
+/* The area a visual draws in; its height comes from --mb-visual-h */
+.magic-bento__visual {
+  position: relative;
+  display: flex;
+  min-height: 0;
+  height: var(--mb-visual-h, 120px);
+  flex-direction: column;
+  justify-content: center;
+}
+
+.magic-bento__well {
+  position: relative;
+  box-sizing: border-box;
+  border-radius: var(--mb-inner-radius);
+  background: var(--mb-well);
+  box-shadow: inset 0 0 0 1px var(--mb-well-edge);
+}
+
+.magic-bento__tile {
+  position: relative;
+  box-sizing: border-box;
+  border-radius: var(--mb-inner-radius);
+  background: var(--mb-tile);
+  box-shadow: var(--mb-tile-shadow);
+}
+
+.magic-bento__tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 1px var(--mb-tile-edge),
+    inset 0 1px 0 var(--mb-tile-highlight);
+  pointer-events: none;
+}
+
+/* ---------- Graph ---------- */
+
+.magic-bento__chart {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  touch-action: pan-y;
+}
+
+.magic-bento__figure {
+  display: flex;
+  min-width: 0;
+  align-items: baseline;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.magic-bento__figure-value {
+  color: var(--mb-ink);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 18px;
+}
+
+.magic-bento__figure-note {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--mb-muted);
+  text-overflow: ellipsis;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  line-height: 14px;
+}
+
+.magic-bento__plot {
+  position: relative;
+  min-height: 0;
+  flex: 1;
+  margin-top: 8px;
+}
+
+.magic-bento__plot svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.magic-bento__chart-area {
+  fill: rgba(var(--mb-accent-rgb), 0.14);
+}
+
+.magic-bento__chart-line {
+  fill: none;
+  stroke: rgb(var(--mb-accent-rgb));
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.magic-bento__scrub {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  background: linear-gradient(to bottom, rgba(var(--mb-accent-rgb), 0), rgba(var(--mb-accent-rgb), 0.35));
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+.magic-bento__scrub-dot {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3px;
+  border-radius: 50%;
+  background: rgb(var(--mb-accent-rgb));
+  box-shadow: 0 0 0 3px var(--mb-ring);
+}
+
+.magic-bento__chart[data-scrub] .magic-bento__scrub {
+  opacity: 1;
+}
+
+/* ---------- Dashboard bars ---------- */
+
+.magic-bento__bars {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+.magic-bento__bars-plot {
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  align-items: flex-end;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.magic-bento__bar {
+  position: relative;
+  height: calc(var(--h) * 100%);
+  min-height: 3px;
+  flex: 1;
+  border-radius: 3px 3px 2px 2px;
+  background: rgba(var(--mb-accent-rgb), 0.22);
+  transform-origin: 50% 100%;
+  transition:
+    background-color 200ms ease,
+    filter 200ms ease;
+}
+
+.magic-bento__bar[data-peak] {
+  background: rgb(var(--mb-accent-rgb));
+}
+
+@media (hover: hover) {
+  .magic-bento__bar:hover {
+    background: rgba(var(--mb-accent-rgb), 0.45);
+  }
+
+  .magic-bento__bar[data-peak]:hover {
+    background: rgb(var(--mb-accent-rgb));
+    filter: brightness(1.1);
+  }
+}
+
+/* ---------- Integration hub: labelled pills wired to a central one ---------- */
+
+.magic-bento__hub {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.magic-bento__hub-links {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.magic-bento__hub-links line {
+  stroke: color-mix(in srgb, var(--mb-muted) 45%, transparent);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.magic-bento__hub-node {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  display: grid;
+  height: 26px;
+  place-items: center;
+  padding: 0 10px;
+  color: var(--mb-ink);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+}
+
+.magic-bento__hub-node.magic-bento__tile {
+  border-radius: 999px;
+}
+
+.magic-bento__hub-node--center {
+  height: 32px;
+  padding: 0 14px;
+  background: rgb(var(--mb-accent-rgb));
+  color: var(--mb-accent-ink);
+  font-size: 13px;
+}
+
+.magic-bento__packet {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  border-radius: 50%;
+  background: rgb(var(--mb-accent-rgb));
+  box-shadow: 0 0 6px rgba(var(--mb-accent-rgb), 0.8);
+  opacity: 0;
+}
+
+/* ---------- Security toggles ---------- */
+
+.magic-bento__shield {
+  display: flex;
+  width: 100%;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.magic-bento__setting {
+  display: flex;
+  height: 32px;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  padding: 0 8px 0 10px;
+  color: var(--mb-ink);
+  font-size: 12.5px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.magic-bento__setting-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.magic-bento__switch {
+  position: relative;
+  width: 26px;
+  height: 16px;
+  flex: none;
+  margin-left: auto;
+  border-radius: 8px;
+  background: rgb(var(--mb-accent-rgb));
+  transition: background-color 220ms ease;
+}
+
+.magic-bento__switch::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--mb-accent-ink);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  transform: translateX(10px);
+  transition: transform 320ms var(--mb-spring);
+}
+
+/* ---------- Pipeline ---------- */
+
+.magic-bento__flow {
+  position: relative;
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.magic-bento__flow-trigger {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px 8px 8px;
+}
+
+.magic-bento__flow-glyph {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  flex: none;
+  place-items: center;
+  border-radius: calc(var(--mb-inner-radius) - 2px);
+  background: var(--mb-well);
+  color: var(--mb-ink);
+}
+
+.magic-bento__flow-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.magic-bento__flow-name {
+  overflow: hidden;
+  color: var(--mb-ink);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 17px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.magic-bento__flow-meta {
+  overflow: hidden;
+  color: var(--mb-muted);
+  font-size: 11.5px;
+  line-height: 15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.magic-bento__flow-hash {
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.magic-bento__steps {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 2px 0 0;
+}
+
+.magic-bento__rail {
+  position: absolute;
+  top: 16px;
+  bottom: 16px;
+  left: 21px;
+  width: 1px;
+  background: var(--mb-line);
+}
+
+.magic-bento__rail-fill {
+  position: absolute;
+  inset: 0;
+  background: rgba(var(--mb-accent-rgb), 0.55);
+  transform-origin: 50% 0;
+}
+
+.magic-bento__step {
+  position: relative;
+  display: flex;
+  height: 33px;
+  align-items: center;
+  gap: 10px;
+  padding: 0 12px 0 14px;
+  color: var(--mb-ink);
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.magic-bento__status {
+  position: relative;
+  display: grid;
+  width: 16px;
+  height: 16px;
+  flex: none;
+  place-items: center;
+}
+
+.magic-bento__status > * {
+  grid-area: 1 / 1;
+}
+
+.magic-bento__pending {
+  width: 12px;
+  height: 12px;
+  box-sizing: border-box;
+  border: 1.5px dashed var(--mb-faint);
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.magic-bento__spinner {
+  width: 14px;
+  height: 14px;
+  box-sizing: border-box;
+  border: 1.5px solid rgba(var(--mb-accent-rgb), 0.22);
+  border-top-color: rgb(var(--mb-accent-rgb));
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.magic-bento__done {
+  display: grid;
+  width: 16px;
+  height: 16px;
+  place-items: center;
+  border-radius: 50%;
+  background: rgb(var(--mb-accent-rgb));
+  color: var(--mb-accent-ink);
+}
+
+/* Pipeline driven by a `status` prop (the site intro): each step shows its own state, the rail fills to --fill */
+.magic-bento__flow[data-controlled] .magic-bento__rail-fill {
+  transform: scaleY(var(--fill, 0));
+  transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.magic-bento__flow[data-controlled] :is(.magic-bento__pending, .magic-bento__spinner, .magic-bento__done) {
+  transition:
+    opacity 200ms ease,
+    scale 360ms var(--mb-spring, ease);
+}
+
+.magic-bento__flow[data-controlled] .magic-bento__done {
+  opacity: 0;
+  scale: 0.4;
+}
+
+.magic-bento__flow[data-controlled] .magic-bento__step[data-status='pending'] {
+  color: var(--mb-muted);
+}
+
+.magic-bento__flow[data-controlled] .magic-bento__step[data-status='pending'] .magic-bento__pending {
+  opacity: 1;
+}
+
+.magic-bento__flow[data-controlled] .magic-bento__step[data-status='running'] {
+  font-weight: 600;
+}
+
+.magic-bento__flow[data-controlled] .magic-bento__step[data-status='running'] .magic-bento__spinner {
+  opacity: 1;
+  animation: magic-bento-spin 700ms linear infinite;
+}
+
+.magic-bento__flow[data-controlled] .magic-bento__step[data-status='done'] .magic-bento__done {
+  opacity: 1;
+  scale: 1;
+}
+
+/* ---------- Animations: paused until the card has entered, so they play as it scrolls into view ---------- */
+
+.magic-bento[data-motion] .magic-bento__chart-line {
+  stroke-dasharray: 1;
+  animation: magic-bento-draw 1100ms cubic-bezier(0.65, 0, 0.35, 1) calc(var(--mb-delay) + 220ms) both paused;
+}
+
+.magic-bento[data-motion] .magic-bento__chart-area {
+  animation: magic-bento-fade 700ms ease calc(var(--mb-delay) + 700ms) both paused;
+}
+
+.magic-bento[data-motion] .magic-bento__bar {
+  animation: magic-bento-grow 760ms var(--mb-spring) calc(var(--mb-delay) + 200ms + var(--i) * 55ms) both paused;
+}
+
+.magic-bento[data-motion] .magic-bento__pending {
+  animation: magic-bento-wait 1ms linear calc(var(--mb-delay) + 360ms + var(--i) * 520ms) both paused;
+}
+
+.magic-bento[data-motion] .magic-bento__spinner {
+  animation:
+    magic-bento-run 520ms linear calc(var(--mb-delay) + 360ms + var(--i) * 520ms) both paused,
+    magic-bento-spin 700ms linear infinite paused;
+}
+
+.magic-bento[data-motion] .magic-bento__done {
+  animation: magic-bento-check 420ms var(--mb-spring) calc(var(--mb-delay) + 880ms + var(--i) * 520ms) both paused;
+}
+
+.magic-bento[data-motion] .magic-bento__rail-fill {
+  animation: magic-bento-rail calc(var(--n) * 520ms) linear calc(var(--mb-delay) + 360ms) both paused;
+}
+
+.magic-bento[data-motion] .magic-bento__hub-node {
+  animation: magic-bento-pop 520ms var(--mb-spring) calc(var(--mb-delay) + 200ms + var(--i) * 70ms) both paused;
+}
+
+.magic-bento[data-motion] .magic-bento__hub-links line {
+  stroke-dasharray: 1;
+  animation: magic-bento-draw 700ms cubic-bezier(0.65, 0, 0.35, 1) calc(var(--mb-delay) + 360ms) both paused;
+}
+
+/* Data flows into the hub while its card is hovered */
+.magic-bento[data-motion] .magic-bento__card[data-active] .magic-bento__packet {
+  animation: magic-bento-packet 1.8s cubic-bezier(0.45, 0, 0.55, 1) calc(var(--i) * 0.45s) infinite;
+}
+
+.magic-bento[data-motion] .magic-bento__switch {
+  animation: magic-bento-switch-track 420ms ease calc(var(--mb-delay) + 520ms + var(--i) * 200ms) both paused;
+}
+
+.magic-bento[data-motion] .magic-bento__switch::after {
+  animation: magic-bento-switch-knob 520ms var(--mb-spring) calc(var(--mb-delay) + 520ms + var(--i) * 200ms) both
+    paused;
+}
+
+.magic-bento[data-motion]
+  .magic-bento__cell[data-state='in']
+  :is(
+    .magic-bento__chart-line,
+    .magic-bento__chart-area,
+    .magic-bento__bar,
+    .magic-bento__pending,
+    .magic-bento__done,
+    .magic-bento__rail-fill,
+    .magic-bento__hub-node,
+    .magic-bento__hub-links line,
+    .magic-bento__switch
+  ),
+.magic-bento[data-motion] .magic-bento__cell[data-state='in'] .magic-bento__switch::after {
+  animation-play-state: running;
+}
+
+.magic-bento[data-motion] .magic-bento__cell[data-state='in'] .magic-bento__spinner {
+  animation-play-state: running, running;
+}
+
+@keyframes magic-bento-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes magic-bento-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes magic-bento-grow {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes magic-bento-pop {
+  from {
+    opacity: 0;
+    scale: 0.6;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes magic-bento-wait {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes magic-bento-run {
+  0% {
+    opacity: 0;
+  }
+  1%,
+  92% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes magic-bento-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes magic-bento-check {
+  from {
+    opacity: 0;
+    scale: 0.4;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes magic-bento-rail {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes magic-bento-packet {
+  0% {
+    top: var(--y);
+    left: var(--x);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    top: 50%;
+    left: 50%;
+    opacity: 0;
+  }
+}
+
+@keyframes magic-bento-switch-track {
+  from {
+    background-color: var(--mb-line);
+  }
+  to {
+    background-color: rgb(var(--mb-accent-rgb));
+  }
+}
+
+@keyframes magic-bento-switch-knob {
+  from {
+    background: var(--mb-ink);
+    transform: none;
+  }
+  to {
+    background: var(--mb-accent-ink);
+    transform: translateX(10px);
+  }
+}

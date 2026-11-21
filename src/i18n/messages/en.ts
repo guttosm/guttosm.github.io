@@ -21,6 +21,7 @@ export const en: Messages = {
     skills: 'Skills',
     contact: 'Contact',
   },
+  intro: { skip: 'Skip intro' },
   hero: {
     eyebrow: 'Software Engineer · Backend, Cloud & Identity',
     intro:
@@ -28,10 +29,13 @@ export const en: Messages = {
     viewExperience: 'View experience',
     downloadCv: 'Download CV',
     location: 'São Caetano do Sul, SP, Brazil · Portuguese and English (C1)',
+    stackChart: {
+      label: 'Technologies in my stack, year by year',
+      count: (count) => `${count} technologies`,
+    },
   },
   stats: [
     { value: '11+ years', label: 'building backend systems since 2015' },
-    { value: '11 companies', label: 'fintech, retail and consulting' },
     { value: 'Java · Go', label: 'event-driven microservices' },
     { value: 'AWS · GCP', label: 'Kubernetes, Terraform, IAM' },
   ],
@@ -134,6 +138,7 @@ export const en: Messages = {
   },
   skills: {
     title: 'Stack',
+    clusterLoad: 'cluster load · 7 days',
     groups: {
       languages: 'Languages and frameworks',
       identity: 'Identity and security',
@@ -161,7 +166,8 @@ export const en: Messages = {
     lead: "Hiring for backend, cloud or identity work? Send me a message and I'll get back to you.",
     emailMe: 'Email me',
     linkedIn: 'Connect on LinkedIn',
-    fields: { email: 'Email', phone: 'Phone', linkedin: 'LinkedIn', location: 'Based in' },
+    gitHub: 'View on GitHub',
+    fields: { email: 'Email', phone: 'Phone', linkedin: 'LinkedIn', github: 'GitHub', location: 'Based in' },
     location: 'São Caetano do Sul, Brazil',
     copyField: (field) => `Copy ${field.toLowerCase()}`,
     copied: 'Copied to clipboard',

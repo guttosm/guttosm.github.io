@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Outlet, useLocation } from 'react-router';
 import ClickSpark from '../ui/ClickSpark';
+import { BootIntro } from './BootIntro';
 import { Footer } from './Footer';
 import { Nav } from './Nav';
 import { SkipLink } from './SkipLink';
@@ -23,22 +24,26 @@ export function Layout() {
   }, [pathname]);
 
   return (
-    <ClickSpark
-      selector="button, .button"
-      sparkColor={SPARK_COLORS}
-      sparkSize={12}
-      sparkRadius={28}
-      sparkCount={10}
-      duration={450}
-      zIndex={50}
-      style={{ height: 'auto' }}
-    >
-      <SkipLink />
-      <Nav />
-      <main id="main" ref={mainRef} tabIndex={-1} className="site-main">
-        <Outlet />
-      </main>
-      <Footer />
-    </ClickSpark>
+    <>
+      {/* Plays over the site on the first visit of a session; outside ClickSpark so it covers the sparks too */}
+      <BootIntro />
+      <ClickSpark
+        selector="button, .button"
+        sparkColor={SPARK_COLORS}
+        sparkSize={12}
+        sparkRadius={28}
+        sparkCount={10}
+        duration={450}
+        zIndex={50}
+        style={{ height: 'auto' }}
+      >
+        <SkipLink />
+        <Nav />
+        <main id="main" ref={mainRef} tabIndex={-1} className="site-main">
+          <Outlet />
+        </main>
+        <Footer />
+      </ClickSpark>
+    </>
   );
 }

@@ -21,6 +21,7 @@ export const nl: Messages = {
     skills: 'Vaardigheden',
     contact: 'Contact',
   },
+  intro: { skip: 'Intro overslaan' },
   hero: {
     eyebrow: 'Software Engineer · Backend, Cloud en Identity',
     intro:
@@ -28,10 +29,13 @@ export const nl: Messages = {
     viewExperience: 'Bekijk ervaring',
     downloadCv: 'Download cv',
     location: 'São Caetano do Sul, SP, Brazilië · Portugees en Engels (C1)',
+    stackChart: {
+      label: 'Technologieën in mijn stack, per jaar',
+      count: (count) => `${count} technologieën`,
+    },
   },
   stats: [
     { value: '11+ jaar', label: 'backendsystemen bouwen sinds 2015' },
-    { value: '11 bedrijven', label: 'fintech, retail en consultancy' },
     { value: 'Java · Go', label: 'event-driven microservices' },
     { value: 'AWS · GCP', label: 'Kubernetes, Terraform, IAM' },
   ],
@@ -134,6 +138,7 @@ export const nl: Messages = {
   },
   skills: {
     title: 'Technologieën',
+    clusterLoad: 'clusterbelasting · 7 dagen',
     groups: {
       languages: 'Talen en frameworks',
       identity: 'Identity en beveiliging',
@@ -161,7 +166,8 @@ export const nl: Messages = {
     lead: 'Zoek je iemand voor backend-, cloud- of identitywerk? Stuur me een bericht, dan neem ik contact met je op.',
     emailMe: 'Mail mij',
     linkedIn: 'Verbind op LinkedIn',
-    fields: { email: 'E-mail', phone: 'Telefoon', linkedin: 'LinkedIn', location: 'Woonplaats' },
+    gitHub: 'Bekijk op GitHub',
+    fields: { email: 'E-mail', phone: 'Telefoon', linkedin: 'LinkedIn', github: 'GitHub', location: 'Woonplaats' },
     location: 'São Caetano do Sul, Brazilië',
     copyField: (field) => `${field} kopiëren`,
     copied: 'Gekopieerd naar het klembord',

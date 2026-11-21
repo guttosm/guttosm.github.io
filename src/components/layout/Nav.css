@@ -32,16 +32,11 @@
   color: #ffffff;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 15px;
+  font-size: 13px;
+  letter-spacing: -0.02em;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.brand-name {
-  font-family: var(--font-display);
-  font-weight: 600;
-  white-space: nowrap;
 }
 
 .nav-actions {
@@ -50,90 +45,21 @@
   gap: 10px;
 }
 
-.nav-links {
-  display: flex;
-  gap: 24px;
-  margin-right: 12px;
-  font-size: 14px;
-  color: var(--muted);
+/* Room between the menu and the language and theme buttons */
+.nav-actions .pill-nav {
+  margin-right: 8px;
 }
 
-.nav-links a {
-  text-decoration: none;
-  white-space: nowrap;
-  transition: color 0.2s ease;
-}
-
-.nav-links a:hover {
-  color: var(--fg);
-}
-
-/* The current page */
-.nav-links a[aria-current='page'] {
-  color: var(--fg);
-  text-decoration: underline;
-  text-decoration-color: var(--purple);
-  text-decoration-thickness: 2px;
-  text-underline-offset: 8px;
-}
-
-.nav-actions .menu-button {
-  display: none;
-}
-
-/* Collapse the links into a menu before the longest translation runs out of room */
+/* On narrow screens the menu becomes a button; keep it at the far right, where the menu button was */
 @media (max-width: 920px) {
-  .nav-actions .menu-button {
-    display: inline-flex;
-  }
-
-  .nav-links {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: var(--gutter);
-    right: var(--gutter);
-    margin: 8px 0 0;
-    flex-direction: column;
-    gap: 0;
-    padding: 8px;
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    font-size: 16px;
-  }
-
-  .nav-links.open {
-    display: flex;
-  }
-
-  .nav-links a {
-    display: block;
-    padding: 12px 14px;
-    border-radius: 10px;
-  }
-
-  .nav-links a:hover,
-  .nav-links a[aria-current='page'] {
-    background: var(--chip);
-  }
-
-  .nav-links a[aria-current='page'] {
-    text-decoration: none;
+  .nav-actions .pill-nav {
+    order: 3;
+    margin-right: 0;
   }
 }
 
 @media (max-width: 560px) {
   .nav-actions {
     gap: 8px;
-  }
-
-  /* The monogram carries the brand on phones; the name stays for screen readers */
-  .brand-name {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
   }
 }

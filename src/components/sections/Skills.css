@@ -1,14 +1,45 @@
-.skills-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-  gap: 20px;
-}
-
+/* Skill cards are Magic Bento cards; the content sits in the bento's content layer */
 .skill-card {
   padding: 24px;
+  /* Lets the card lay its visual beside the text once the card itself is wide enough */
+  container-type: inline-size;
+}
+
+.skill-card > .magic-bento__content {
+  gap: 18px;
+}
+
+.skill-card-text {
   display: flex;
   flex-direction: column;
   gap: 14px;
+}
+
+/* Animated visuals: toggles, pipeline and hub */
+.skill-visual {
+  --mb-visual-h: auto;
+}
+
+.skill-card-data .skill-visual {
+  --mb-visual-h: 130px;
+}
+
+/* Cluster dashboards in the AWS and GCP cards */
+.skill-card-aws .skill-visual,
+.skill-card-gcp .skill-visual {
+  --mb-visual-h: 96px;
+}
+
+/* Wide cards: text on the left, visual on the right */
+@container (min-width: 500px) {
+  .skill-card-identity > .magic-bento__content,
+  .skill-card-devops > .magic-bento__content,
+  .skill-card-data > .magic-bento__content {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 28px;
+  }
 }
 
 .skill-card h3 {

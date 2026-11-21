@@ -1,0 +1,12 @@
+/* The element that holds a <StarBorder>. Its own background paints first, then the light, then its content. */
+.star-border {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Position and size are set from the parent's measured box, with room around it for the glow */
+.star-border__light {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}

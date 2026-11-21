@@ -1,0 +1,175 @@
+/* Magic Bento from React Bits, on the GM Signature tokens. --mb-glow-rgb is set from the glow colour in JS. */
+.magic-bento {
+  --mb-surface: var(--card);
+  --mb-edge: var(--line);
+  --mb-highlight: rgba(255, 255, 255, 0.04);
+  --mb-focus: var(--purple);
+  --mb-glow-alpha: 0.9;
+  --mb-spot-alpha: 0.1;
+  --mb-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+  position: relative;
+  box-sizing: border-box;
+  display: grid;
+  grid-auto-flow: row dense;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root[data-theme='light'] .magic-bento {
+  --mb-highlight: rgba(255, 255, 255, 1);
+  --mb-glow-alpha: 0.6;
+  --mb-spot-alpha: 0.06;
+}
+
+/* A springy settle where the browser supports linear() easing */
+@supports (transition-timing-function: linear(0, 1)) {
+  .magic-bento {
+    --mb-spring: linear(
+      0, 0.0603, 0.2033, 0.3821, 0.5633, 0.7258, 0.8584, 0.9574, 1.0242, 1.0634, 1.0809, 1.0828, 1.0747, 1.0613,
+      1.046, 1.0313, 1.0186, 1.0085, 1.0012, 0.9965, 0.994, 0.9931, 0.9933, 0.9941, 0.9953, 0.9966, 0.9978,
+      0.9988, 1
+    );
+  }
+}
+
+.magic-bento__cell {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  --mb-delay: 0ms;
+}
+
+/* Entrance: cards rise in one after another once the grid scrolls into view */
+.magic-bento[data-intro] .magic-bento__cell {
+  opacity: 0;
+  transform: translate3d(0, 16px, 0) scale(0.97);
+}
+
+.magic-bento[data-intro] .magic-bento__cell[data-state='in'] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 420ms cubic-bezier(0.22, 1, 0.36, 1) var(--mb-delay),
+    transform 760ms var(--mb-spring) var(--mb-delay);
+}
+
+.magic-bento__card {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--mb-radius);
+  background: var(--mb-surface);
+  isolation: isolate;
+  transform: perspective(900px) translate3d(var(--mb-tx, 0px), var(--mb-ty, 0px), 0) rotateX(var(--mb-rx, 0deg))
+    rotateY(var(--mb-ry, 0deg)) scale(var(--mb-press, 1));
+}
+
+.magic-bento__card:focus-within {
+  box-shadow: 0 0 0 2px var(--mb-focus);
+}
+
+/* Soft light inside the card under the pointer */
+.magic-bento__light {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  background: radial-gradient(
+    var(--mb-spot-size) circle at var(--mb-x, -999px) var(--mb-y, -999px),
+    rgba(var(--mb-glow-rgb), calc(var(--mb-spot-alpha) * var(--mb-hot, 0) * 1)) 0%,
+    rgba(var(--mb-glow-rgb), calc(var(--mb-spot-alpha) * var(--mb-hot, 0) * 0.973)) 15%,
+    rgba(var(--mb-glow-rgb), calc(var(--mb-spot-alpha) * var(--mb-hot, 0) * 0.837)) 30%,
+    rgba(var(--mb-glow-rgb), calc(var(--mb-spot-alpha) * var(--mb-hot, 0) * 0.593)) 45%,
+    rgba(var(--mb-glow-rgb), calc(var(--mb-spot-alpha) * var(--mb-hot, 0) * 0.317)) 60%,
+    rgba(var(--mb-glow-rgb), calc(var(--mb-spot-alpha) * var(--mb-hot, 0) * 0.104)) 75%,
+    rgba(var(--mb-glow-rgb), calc(var(--mb-spot-alpha) * var(--mb-hot, 0) * 0.009)) 90%,
+    rgba(var(--mb-glow-rgb), 0) 100%
+  );
+  pointer-events: none;
+}
+
+.magic-bento__stars {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.magic-bento__rim {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 1px var(--mb-edge),
+    inset 0 1px 0 var(--mb-highlight);
+  pointer-events: none;
+}
+
+/* The 1px border light: follows the pointer across every card, plus the ripple after a click */
+.magic-bento__border {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  box-sizing: border-box;
+  padding: 1px;
+  border-radius: inherit;
+  background:
+    radial-gradient(
+      var(--mb-border-size) circle at var(--mb-x, -999px) var(--mb-y, -999px),
+      rgba(var(--mb-glow-rgb), calc(var(--mb-glow-alpha) * var(--mb-near, 0) * 1)) 0%,
+      rgba(var(--mb-glow-rgb), calc(var(--mb-glow-alpha) * var(--mb-near, 0) * 0.973)) 15%,
+      rgba(var(--mb-glow-rgb), calc(var(--mb-glow-alpha) * var(--mb-near, 0) * 0.837)) 30%,
+      rgba(var(--mb-glow-rgb), calc(var(--mb-glow-alpha) * var(--mb-near, 0) * 0.593)) 45%,
+      rgba(var(--mb-glow-rgb), calc(var(--mb-glow-alpha) * var(--mb-near, 0) * 0.317)) 60%,
+      rgba(var(--mb-glow-rgb), calc(var(--mb-glow-alpha) * var(--mb-near, 0) * 0.104)) 75%,
+      rgba(var(--mb-glow-rgb), calc(var(--mb-glow-alpha) * var(--mb-near, 0) * 0.009)) 90%,
+      rgba(var(--mb-glow-rgb), 0) 100%
+    ),
+    radial-gradient(
+      circle at var(--mb-wx, -999px) var(--mb-wy, -999px),
+      rgba(var(--mb-glow-rgb), 0) calc(var(--mb-wr, 0px) - 110px),
+      rgba(var(--mb-glow-rgb), calc(var(--mb-glow-alpha) * var(--mb-wa, 0) * 0.1)) calc(var(--mb-wr, 0px) - 80px),
+      rgba(var(--mb-glow-rgb), calc(var(--mb-glow-alpha) * var(--mb-wa, 0) * 0.32)) calc(var(--mb-wr, 0px) - 52px),
+      rgba(var(--mb-glow-rgb), calc(var(--mb-glow-alpha) * var(--mb-wa, 0) * 0.68)) calc(var(--mb-wr, 0px) - 28px),
+      rgba(var(--mb-glow-rgb), calc(var(--mb-glow-alpha) * var(--mb-wa, 0) * 0.94)) calc(var(--mb-wr, 0px) - 10px),
+      rgba(var(--mb-glow-rgb), calc(var(--mb-glow-alpha) * var(--mb-wa, 0))) calc(var(--mb-wr, 0px) - 3px),
+      rgba(var(--mb-glow-rgb), 0) var(--mb-wr, 0px)
+    );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  pointer-events: none;
+}
+
+.magic-bento__content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .magic-bento[data-intro] .magic-bento__cell,
+  .magic-bento[data-intro] .magic-bento__cell[data-state='in'] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

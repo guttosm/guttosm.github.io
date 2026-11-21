@@ -1,0 +1,248 @@
+/* The terminal intro over the site. The terminal itself stays dark in both themes, like a real one. */
+.boot-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 24px 16px;
+  background:
+    radial-gradient(60% 50% at 50% 40%, color-mix(in srgb, var(--purple) 14%, transparent), transparent 70%),
+    var(--bg);
+  cursor: pointer;
+}
+
+/* The backdrop is solid from the first frame, so the site never flashes before the intro; only the
+   terminal and the stages fade in */
+.boot-terminal,
+.boot-pipeline,
+.boot-skip {
+  animation: boot-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.boot-intro[data-leaving] {
+  pointer-events: none;
+  animation: boot-out 550ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+.boot-intro[data-leaving] .boot-terminal {
+  animation: boot-terminal-out 550ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* Terminal and pipeline side by side; stacked on narrow screens */
+.boot-stage-area {
+  display: flex;
+  width: min(1000px, 100%);
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+.boot-terminal {
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+  border: 1px solid #2a3150;
+  border-radius: 14px;
+  background: #0b0f1d;
+  box-shadow:
+    0 30px 80px -30px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(167, 139, 250, 0.08),
+    0 0 60px -20px rgba(124, 58, 237, 0.45);
+  font-family: var(--font-mono);
+  cursor: default;
+}
+
+.boot-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-bottom: 1px solid #1d2340;
+  background: #10152a;
+}
+
+.boot-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+
+.boot-dot-red {
+  background: #ff5f57;
+}
+
+.boot-dot-yellow {
+  background: #febc2e;
+}
+
+.boot-dot-green {
+  background: #28c840;
+}
+
+.boot-title {
+  flex: 1;
+  margin-right: 46px;
+  color: #8b93b8;
+  font-size: 12px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* The newest lines stay in view: the screen grows to its height, then older lines scroll off the top */
+.boot-screen {
+  display: flex;
+  height: min(360px, 52vh);
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding: 14px 18px 16px;
+  color: #e6e9f5;
+  font-size: 13px;
+  line-height: 1.65;
+  /* Show Docker's => as typed, like a terminal, not as a font ligature */
+  font-variant-ligatures: none;
+}
+
+.boot-line {
+  flex: none;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.boot-prompt {
+  color: #22d3ee;
+  font-weight: 700;
+}
+
+.boot-cmd {
+  color: #f4f5ff;
+}
+
+.boot-tone-dim {
+  color: #7d86ab;
+}
+
+.boot-ok {
+  color: #3fb950;
+  font-weight: 700;
+}
+
+.boot-tone-success {
+  margin-top: 4px;
+  color: #3fb950;
+  font-weight: 700;
+}
+
+.boot-cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.1em;
+  margin-left: 1px;
+  vertical-align: -0.2em;
+  background: #a78bfa;
+  animation: boot-blink 1s steps(1) infinite;
+}
+
+/* The DevOps bento's "git push" pipeline, following the terminal step by step */
+.boot-intro .boot-pipeline {
+  display: block;
+  width: 280px;
+  flex: none;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow: 0 30px 80px -40px rgba(0, 0, 0, 0.7);
+  cursor: default;
+}
+
+.boot-skip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--muted);
+  font-size: 13px;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.boot-skip:hover,
+.boot-skip:focus-visible {
+  border-color: var(--purple);
+  color: var(--fg);
+}
+
+.boot-skip kbd {
+  padding: 1px 6px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+/* Narrow screens: pipeline on top, a shorter terminal under it */
+@media (max-width: 760px) {
+  .boot-stage-area {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .boot-intro .boot-pipeline {
+    width: auto;
+    padding: 10px;
+  }
+
+  .boot-screen {
+    height: min(260px, 30vh);
+  }
+}
+
+@media (max-width: 560px) {
+  .boot-screen {
+    padding: 12px 12px 14px;
+    font-size: 11px;
+  }
+
+  .boot-title {
+    margin-right: 0;
+  }
+}
+
+@keyframes boot-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@keyframes boot-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes boot-terminal-out {
+  to {
+    transform: translateY(-12px) scale(0.97);
+  }
+}
+
+@keyframes boot-blink {
+  50% {
+    opacity: 0;
+  }
+}

@@ -36,12 +36,16 @@ export interface Messages {
     language: string;
   };
   nav: Record<SectionId, string>;
+  /** The terminal intro before the site */
+  intro: { skip: string };
   hero: {
     eyebrow: string;
     intro: string;
     viewExperience: string;
     downloadCv: string;
     location: string;
+    /** The chart of technologies used per year, in the first stat card */
+    stackChart: { label: string; count: (count: number) => string };
   };
   stats: readonly { value: string; label: string }[];
   about: {
@@ -63,6 +67,8 @@ export interface Messages {
   };
   skills: {
     title: string;
+    /** Label over the cluster dashboards in the AWS and GCP cards */
+    clusterLoad: string;
     groups: Record<SkillGroupId, string>;
     facts: readonly (TitledText & { label: string })[];
   };
@@ -71,7 +77,8 @@ export interface Messages {
     lead: string;
     emailMe: string;
     linkedIn: string;
-    fields: { email: string; phone: string; linkedin: string; location: string };
+    gitHub: string;
+    fields: { email: string; phone: string; linkedin: string; github: string; location: string };
     location: string;
     /** Accessible name of a copy button, e.g. "Copy email". */
     copyField: (field: string) => string;

@@ -50,16 +50,13 @@
   color: var(--muted);
 }
 
+/* The stat cards are a Magic Bento grid, which sets its own columns and gap */
 .stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
-  gap: 16px;
   padding-bottom: 72px;
 }
 
 .stat {
   padding: 20px 22px;
-  border-radius: 14px;
 }
 
 .stat-value {
@@ -68,6 +65,12 @@
   font-size: clamp(24px, 2.4vw, 30px);
   white-space: nowrap;
   line-height: 1.1;
+}
+
+/* The graph under the first stat */
+.stat-chart {
+  --mb-visual-h: 150px;
+  margin-top: 18px;
 }
 
 .stat-label {

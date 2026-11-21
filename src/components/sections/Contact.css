@@ -69,3 +69,10 @@
 .contact-row dd a:hover {
   color: var(--purple);
 }
+
+/* Profile links (LinkedIn, GitHub) with their logo */
+.contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
